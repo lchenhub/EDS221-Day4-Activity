@@ -1,0 +1,93 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+```
+
+## Part 1. For loops revisited
+
+```{r}
+weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+
+transects <- c("Transect_A", "Transect_B", "Transect_C")
+```
+
+```{r}
+out_matrix <- matrix(nrow = length(weekdays), ncol = length(transects))
+
+
+for (i in seq_along(weekdays)) {
+  for (j in seq_along(transects)) {
+   output <- paste(weekdays[i], "-", transects[j])
+    out_matrix[i,j] <- output
+  }
+}
+```
+
+## Part 2. Functions introduced
+
+### Task 2
+
+```{r}
+calc_force <- function(m, a) {
+  print(m * a)
+  print(paste("The resulting force is", F, "Newtons"))
+}
+```
+
+### Task 3
+
+```{r}
+sci_name <- c("chanos_chanos", "sphyraena_barracuda", "Caranx_ignobilis")
+common_name <- c("Milkfish", "Great barricuda", "Giant trevally")
+a_est <- c(0.0905, 0.0181, 0.0353)
+b_est <- c(2.52, 3.27, 3.05)
+
+
+fish_parms <- data.frame(sci_name, common_name, a_est, b_est)
+
+fish_weight <- function(fish_name, tot_length) {
+  my_subset <- filter(fish_parms, common_name == fish_name)
+  my_subset$a_est * (tot_length ^ my_subset$b_est)
+}
+
+fish_weight(fish_name = "Milkfish", tot_length = 5)
+
+#create a vector
+vec_1 <- seq(from = 0, to = 100, by = 1)
+
+fish_weight(fish_name = "Milkfish", tot_length = vec_1)
+```
+
+### Task 4
+
+```{r}
+deep_wave_power <- function(height_m, period_sec) {
+  P <- (0.5 * (height_m ^ 2) * period_sec)
+  print(P)
+}
+
+height_m <- c(from = 0, to = 3, by = 0.2)
+
+deep_wave_power(period_sec = 8, height_m)
+```
+
+Task 5 (Optional)
+
+```{r}
+wave_power_brenville <- function(depth, period, height) {
+  if (depth > 12) {
+    message("deep equation used")
+    0.5 * (height ^ 2) * period
+    } else if (depth <= 12) {
+      message("shallow equation used")
+      0.81 * (height ^ 2) * period
+    }
+}
+
+wave_power_brenville(depth = 30, period = 8, height = 2)
+```
